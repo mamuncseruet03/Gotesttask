@@ -20,8 +20,11 @@ func main() {
 
 	fmt.Printf("Average Number = %d\n", averageNumber(text))
 
+	fmt.Printf("wholeStory = %s\n", wholeStory(text))
+
 }
 
+// Check ASCII String
 func isASCII(s string) bool {
 	for i := 0; i < len(s); i++ {
 		if s[i] > unicode.MaxASCII {
@@ -89,4 +92,31 @@ func averageNumber(texts string) int {
 		return 0
 	}
 
+}
+
+// Function wholeStory that takes the string, and returns a text that is composed from all the text words separated
+func wholeStory(texts string) string {
+
+	var wholeStory = ""
+
+	if testValidity(texts) {
+
+		dt := strings.Split(texts, "-")
+
+		for index, value := range dt {
+			if index%2 != 0 {
+
+				if index != 1 {
+					wholeStory = wholeStory + " " + value
+
+				} else {
+					wholeStory = wholeStory + value
+				}
+			}
+		}
+
+		return wholeStory
+	}
+
+	return wholeStory
 }
