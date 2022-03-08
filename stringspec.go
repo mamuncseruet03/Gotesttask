@@ -17,6 +17,9 @@ func main() {
 	} else {
 		fmt.Println("InValid")
 	}
+
+	fmt.Printf("Average Number = %d\n", averageNumber(text))
+
 }
 
 func isASCII(s string) bool {
@@ -56,4 +59,34 @@ func testValidity(texts string) bool {
 		}
 	}
 	return true
+}
+
+// Function to calculate the average number from all the numbers
+func averageNumber(texts string) int {
+
+	// check validity
+	if testValidity(texts) {
+
+		dt := strings.Split(texts, "-")
+
+		var total = 0
+		var divisor = 0
+
+		for index, value := range dt {
+			if index%2 == 0 {
+				intValue, _ := strconv.Atoi(value)
+				total = total + intValue
+				divisor++
+			}
+		}
+
+		if divisor > 0 {
+			return total / divisor
+		}
+
+		return 0
+	} else {
+		return 0
+	}
+
 }
