@@ -135,14 +135,15 @@ func wholeStory(texts string) string {
 -the average word length
 -the list (or empty list) of all words from the story that have the length the same as the average length rounded up and down.
 */
-func storyStats(texts string) (string, string, int, []string) {
+func storyStats(texts string) (string, string, int, []string) { //
 	var shortestWord = ""
 	var longestWord = ""
 	var averageWordLength = 0
 	var listOfAverageWord []string
+
 	if testValidity(texts) {
 		dt := strings.Split(texts, "-")
-		var deviser = 0
+		var divisor = 0
 		var currentLength = 0
 		var roundUp = 0
 		var roundDown = 0
@@ -161,24 +162,24 @@ func storyStats(texts string) (string, string, int, []string) {
 					shortestWord = value
 				}
 				averageWordLength = averageWordLength + currentLength
-				deviser++
+				divisor++
 			}
 		}
-		averageWordLength = averageWordLength / deviser
-		currentLength = averageWordLength
-		if currentLength > averageWordLength {
-			roundDown = currentLength - 1
-			roundUp = currentLength
-		} else if currentLength < averageWordLength {
-			roundDown = currentLength
-			roundUp = currentLength + 1
-		} else {
-			roundDown = currentLength
-			roundUp = currentLength
+		if divisor != 0 {
+			roundDown = averageWordLength / divisor
 		}
+
+		roundUp = roundDown
+		if (averageWordLength % divisor) > 0 {
+			roundUp++
+		}
+		if divisor != 0 {
+			averageWordLength = averageWordLength / divisor
+		}
+
 		for index, value := range dt {
-			if index%2 == 0 {
-				if len(value) == roundDown || len(value) == roundUp {
+			if index%2 == 1 {
+				if len(value) >= roundDown && len(value) <= roundUp {
 					listOfAverageWord = append(listOfAverageWord, value)
 				}
 			}
