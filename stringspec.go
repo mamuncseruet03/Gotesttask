@@ -28,10 +28,12 @@ func main() {
 
 	fmt.Printf("shortestWord = %s longestWord = %s averageWordLength =%d\n", shortestWord, longestWord, averageWordLength)
 
-	for _, value := range listOfAverageWord {
-		fmt.Printf("Item = %s", value)
-	}
+	fmt.Printf("list Of Average Words \n")
 
+	for _, value := range listOfAverageWord {
+		fmt.Printf("Item = %s\n", value)
+	}
+	fmt.Printf("Generate Strings \n")
 	generate(true)
 
 }
@@ -49,6 +51,7 @@ func isASCII(s string) bool {
 }
 
 // Function to check whether the input text is valid or invalid
+// difficulty : 4 out of 10, Estimate: 1 hour, Taken: 1 hour
 func testValidity(texts string) bool {
 
 	dt := strings.Split(texts, "-")
@@ -79,6 +82,7 @@ func testValidity(texts string) bool {
 }
 
 // Function to calculate the average number from all the numbers
+// difficulty : 3 out of 10, Estimate: 1 hour, Taken: 1 hour
 func averageNumber(texts string) int {
 
 	// check validity
@@ -109,6 +113,7 @@ func averageNumber(texts string) int {
 }
 
 // Function wholeStory that takes the string, and returns a text that is composed from all the text words separated
+// difficulty : 4 out of 10, Estimate: 1 hour, Taken: 1 hour
 func wholeStory(texts string) string {
 
 	var wholeStory = ""
@@ -136,6 +141,7 @@ func wholeStory(texts string) string {
 }
 
 /* Function storyStats that returns four things:
+// difficulty : 6 out of 10, Estimate: 3 hours, Taken: 2.3 hours
 -the shortest word
 -the longest word
 -the average word length
@@ -200,6 +206,8 @@ func storyStats(texts string) (string, string, int, []string) { //
 }
 
 // function takes boolean flag and generates random correct strings if the parameter is true and random incorrect strings if the flag is false
+// difficulty : 7 out of 10, Estimate: 6 hours, Taken: 5 hours
+
 func generate(valid bool) []string {
 	var strings []string
 	for kn := 0; kn < 5; kn++ {
