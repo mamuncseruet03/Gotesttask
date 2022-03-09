@@ -2,8 +2,10 @@ package main
 
 import (
 	"fmt"
+	"math/rand"
 	"strconv"
 	"strings"
+	"time"
 	"unicode"
 )
 
@@ -30,7 +32,11 @@ func main() {
 		fmt.Printf("Item = %s", value)
 	}
 
+	generate(true)
+
 }
+
+var randHelper = initialrandomhelper()
 
 // Check ASCII String
 func isASCII(s string) bool {
@@ -191,4 +197,116 @@ func storyStats(texts string) (string, string, int, []string) { //
 		averageWordLength,
 		listOfAverageWord
 
+}
+
+// function takes boolean flag and generates random correct strings if the parameter is true and random incorrect strings if the flag is false
+func generate(valid bool) []string {
+	var strings []string
+	for kn := 0; kn < 5; kn++ {
+		k := 0
+		numberOfText := randIntInRange(1, 9)
+
+		var words []string
+		word := ""
+
+		var intNumbers []string
+		inavlidType := randIntInRange(0, 3)
+		/*
+			0. string first , integer second
+			1. 0 length string
+			2. integer = float
+			3. integer = string
+		*/
+		inavlidPsition := 0
+		if numberOfText > 1 {
+			inavlidPsition = randIntInRange(0, (numberOfText - 1))
+		}
+
+		for k = numberOfText + 1; k > 0; k-- {
+			if inavlidPsition == (numberOfText-(k-1)) && inavlidType == 1 && !valid {
+				word = ""
+			} else {
+				word = randString()
+			}
+			words = append(words, word)
+
+			if inavlidPsition == (numberOfText-(k-1)) && inavlidType == 2 && !valid {
+				word = getRandomInteger() + "." + getRandomInteger()
+				intNumbers = append(intNumbers, word)
+			} else if inavlidPsition == (numberOfText-(k-1)) && inavlidType == 3 && !valid {
+				word = randString()
+				intNumbers = append(intNumbers, word)
+			} else {
+				word = getRandomInteger()
+				intNumbers = append(intNumbers, word)
+			}
+		}
+
+		result := ""
+
+		for k = 0; k < numberOfText; k++ {
+			if k > 0 {
+				result = result + "-"
+			}
+			if k == 0 && inavlidType == 0 && !valid {
+				result = result + words[k] + "-" + intNumbers[k]
+			} else {
+				result = result + intNumbers[k] + "-" + words[k]
+			}
+		}
+
+		println(result)
+
+		strings = append(strings, result)
+	}
+	return strings
+}
+
+func randString() string {
+	const letterBytes = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+	const letterBytesChar = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+
+	b := make([]byte, getWordLength())
+	for i := range b {
+		b[i] = letterBytes[rand.Int63()%int64(len(letterBytes))]
+	}
+	a := make([]byte, 1)
+	for i := range a {
+		a[i] = letterBytesChar[rand.Int63()%int64(len(letterBytesChar))]
+	}
+	return string(a) + string(b)
+}
+
+func getRandomInteger() string {
+	const letterBytes = "0123456789"
+
+	b := make([]byte, getIntLength())
+	for i := range b {
+		b[i] = letterBytes[rand.Int63()%int64(len(letterBytes))]
+	}
+	return string(b)
+}
+
+func getWordLength() int {
+	return (randIntInRange(1, 10))
+}
+
+func getIntLength() int {
+	return (randIntInRange(1, 7))
+}
+
+func randIntInRange(min int, max int) int {
+
+	randHelper = randHelper + 39
+	if randHelper > 99999999 {
+		randHelper = randHelper / 99999
+	}
+	s3 := rand.NewSource(int64(randHelper))
+	r3 := rand.New(s3)
+	return (r3.Intn(max-min+1) + min)
+}
+
+func initialrandomhelper() int {
+	rand.Seed(time.Now().UnixNano())
+	return (rand.Intn(100) + 3)
 }
