@@ -22,6 +22,14 @@ func main() {
 
 	fmt.Printf("wholeStory = %s\n", wholeStory(text))
 
+	shortestWord, longestWord, averageWordLength, listOfAverageWord := storyStats(text)
+
+	fmt.Printf("shortestWord = %s longestWord = %s averageWordLength =%d\n", shortestWord, longestWord, averageWordLength)
+
+	for _, value := range listOfAverageWord {
+		fmt.Printf("Item = %s", value)
+	}
+
 }
 
 // Check ASCII String
@@ -119,4 +127,67 @@ func wholeStory(texts string) string {
 	}
 
 	return wholeStory
+}
+
+/* Function storyStats that returns four things:
+-the shortest word
+-the longest word
+-the average word length
+-the list (or empty list) of all words from the story that have the length the same as the average length rounded up and down.
+*/
+func storyStats(texts string) (string, string, int, []string) {
+	var shortestWord = ""
+	var longestWord = ""
+	var averageWordLength = 0
+	var listOfAverageWord []string
+	if testValidity(texts) {
+		dt := strings.Split(texts, "-")
+		var deviser = 0
+		var currentLength = 0
+		var roundUp = 0
+		var roundDown = 0
+
+		shortestWord = dt[1]
+		longestWord = dt[1]
+		averageWordLength = 0
+
+		for index, value := range dt {
+			if index%2 != 0 {
+				currentLength = len(value)
+				if currentLength > len(longestWord) {
+					longestWord = value
+				}
+				if currentLength < len(shortestWord) {
+					shortestWord = value
+				}
+				averageWordLength = averageWordLength + currentLength
+				deviser++
+			}
+		}
+		averageWordLength = averageWordLength / deviser
+		currentLength = averageWordLength
+		if currentLength > averageWordLength {
+			roundDown = currentLength - 1
+			roundUp = currentLength
+		} else if currentLength < averageWordLength {
+			roundDown = currentLength
+			roundUp = currentLength + 1
+		} else {
+			roundDown = currentLength
+			roundUp = currentLength
+		}
+		for index, value := range dt {
+			if index%2 == 0 {
+				if len(value) == roundDown || len(value) == roundUp {
+					listOfAverageWord = append(listOfAverageWord, value)
+				}
+			}
+		}
+	}
+
+	return shortestWord,
+		longestWord,
+		averageWordLength,
+		listOfAverageWord
+
 }
